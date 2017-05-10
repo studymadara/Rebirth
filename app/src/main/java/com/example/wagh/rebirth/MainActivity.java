@@ -1,5 +1,7 @@
 package com.example.wagh.rebirth;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -24,12 +26,22 @@ public class MainActivity extends AppCompatActivity {
     private Button b1;
 
 
+    Context context;
+
+    Database bb;
+
+    private static final String databasename = "weather.db";
+
+
     String gold = null;
 
     String finaldata="";
 
     Object anyObject = null;
 
+    ServerCalls sc;
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +49,15 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(getBaseContext(),"Welcome back!!",Toast.LENGTH_LONG).show();
 
+
+        //database things
+
+        context=getApplicationContext();
+
+        bb=new Database(this);
+
+
+        //*end of database things
 
         textView=(TextView)findViewById(R.id.texty);
 
@@ -46,13 +67,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ServerCalls sc = new ServerCalls();
+                sc = new ServerCalls();
 
-                sc.execute(anyObject, gold);        ////some issues need to check from hereQ!!!!!!!!!!!
+                sc.execute(anyObject, gold,MainActivity.this);        ////some issues need to check from hereQ!!!!!!!!!!!
 
-                textView.setText(finaldata);
+                //finaldata=sc.data2;
+
+                //textView.setText(finaldata);
+
+
             }
         });
+
+       // finaldata=sc.data2;
+
+        //JSONToString(finaldata);
+
     }
 
 
@@ -85,8 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                  String base=jsonObject.getString("base");
-
-                 String visibility=jsonObject.getString("visibility");
 
                  String dt=jsonObject.getString("dt");
 
@@ -131,13 +159,33 @@ public class MainActivity extends AppCompatActivity {
 
                  Log.d("Data Congo",name);
 
-                 finaldata+="|base="+base+"|visibility="+visibility+"|dt="+dt+"|id="+id+"|name="+name+"|cod="+cod+"|lon="+lon+"|lat="+lat+"|temp="+temp+"|pressure="+pressure+"|humidity="+humidity+"|temp max="+temp_max+"|temp min="+temp_min;
+                 finaldata+="|base="+base+"|dt="+dt+"|id="+id+"|name="+name+"|cod="+cod+"|lon="+lon+"|lat="+lat+"|temp="+temp+"|pressure="+pressure+"|humidity="+humidity+"|temp max="+temp_max+"|temp min="+temp_min;
 
                  finaldata+="|id="+id1+"|main="+main+"|description="+description;
 
                  Log.d("Data Congo",finaldata);
 
-                // textView.setText(name);
+                 //database things
+
+
+                 SQLiteDatabase databasemain =null;
+
+
+                     databasemain=openOrCreateDatabase(databasename,MODE_PRIVATE,null);
+
+                 //context=getApplicationContext();
+
+                //java.lang.NullPointerException: Attempt to invoke virtual method 'android.database.sqlite.SQLiteDatabase android.content.Context.openOrCreateDatabase(java.lang.String, int, android.database.sqlite.SQLiteDatabase$CursorFactory)' on a null object reference
+
+
+                 //still error on this line
+
+                 bb.onCreate(databasemain);
+
+                 bb.insert(databasemain,base,dt,id,name,cod,lon,lat,temp,pressure,humidity,temp_max,temp_min,id1,main,description);
+
+
+                textView.setText(name);
 
                 // textView.setText(finaldata);
 

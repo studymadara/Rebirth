@@ -34,6 +34,7 @@ public class ServerCalls extends AsyncTask<Object,Void,String> {
 
     String send;
 
+    MainActivity mm;
 
     @Override
     protected String doInBackground(Object[] params) {
@@ -77,7 +78,9 @@ public class ServerCalls extends AsyncTask<Object,Void,String> {
                 data2+=data1;
             }
 
-            return data2;
+            this.mm=(MainActivity)params[2];
+
+            //return data2;
         }
         catch (Exception e)
         {
@@ -87,14 +90,14 @@ public class ServerCalls extends AsyncTask<Object,Void,String> {
 
 
 
-        return data2="No Data Found";
+        return data1="";
     }
 
     @Override
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     protected void onPostExecute(String s) {
 
-        MainActivity mm=new MainActivity();
+
 
         mm.JSONToString(data2);
 

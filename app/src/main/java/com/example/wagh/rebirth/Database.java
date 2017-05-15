@@ -2,6 +2,7 @@ package com.example.wagh.rebirth;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -55,6 +56,10 @@ public class Database extends SQLiteOpenHelper {
 
     String temp_max = "temp_max";
 
+    //extraction declaration
+
+    String alltime="";
+
 
     Database(Context context) {
         super(context, databasename, null, DATABASEVERSION);
@@ -73,7 +78,7 @@ public class Database extends SQLiteOpenHelper {
 
         //database=SQLiteDatabase.openOrCreateDatabase(databasename,null);
 
-        query = "CREATE TABLE " + tablename + "(" + base + " VARCHAR2," + dt + " VARCHAR2," + id + " VARCHAR2," + name + " VARCHAR2," + cod + " VARCHAR2," + lon + " VARCHAR2," + lat + " VARCHAR2," + id1 + " VARCHAR2," + main + " VARCHAR2," + description + " VARCHAR2," + temp + " VARCHAR2," + pressure + " VARCHAR2," + humidity + " VARCHAR2," + temp_min + " VARCHAR2," + temp_max + " VARCHAR2)";
+        query = "CREATE TABLE IF NOT EXISTS " + tablename + "(" + base + " VARCHAR2," + dt + " VARCHAR2," + id + " VARCHAR2," + name + " VARCHAR2," + cod + " VARCHAR2," + lon + " VARCHAR2," + lat + " VARCHAR2," + id1 + " VARCHAR2," + main + " VARCHAR2," + description + " VARCHAR2," + temp + " VARCHAR2," + pressure + " VARCHAR2," + humidity + " VARCHAR2," + temp_min + " VARCHAR2," + temp_max + " VARCHAR2)";
 
         db.execSQL(query);
 
@@ -130,6 +135,69 @@ public class Database extends SQLiteOpenHelper {
         }
 
 
+            ////**********************************************************get data from database is left should be available in next version :)
+    }
+
+
+    public String extract(SQLiteDatabase db)
+    {
+        try
+        {
+            String queryextract="SELECT * FROM "+tablename;
+
+            SQLiteDatabase dbinsert=this.getWritableDatabase();
+
+            Cursor cc=dbinsert.rawQuery(queryextract,null);
+
+            int ibase = cc.getColumnIndex(base);
+
+            int idt = cc.getColumnIndex(dt);
+
+            int iid = cc.getColumnIndex(id);
+
+            int iname = cc.getColumnIndex(name);
+
+            int icod = cc.getColumnIndex(cod);
+
+            int ilon = cc.getColumnIndex(lon);
+
+            int ilat = cc.getColumnIndex(lat);
+
+            int iid1 = cc.getColumnIndex(id1);
+
+            int imain = cc.getColumnIndex(main);
+
+            int idescription = cc.getColumnIndex(description);
+
+            int itemp = cc.getColumnIndex(temp);
+
+            int ipressure = cc.getColumnIndex(pressure);
+
+            int ihumidity = cc.getColumnIndex(humidity);
+
+            int itemp_min = cc.getColumnIndex(temp_min);
+
+            int itemp_max = cc.getColumnIndex(temp_max);
+
+            if (cc.moveToFirst())
+            {
+                do
+                {
+                    alltime=cc.getString(ibase)+"%"+cc.getString(idt)+"%"+cc.getString(iid)+"%"+cc.getString(iname)+"%"+cc.getString(icod)+"%"+cc.getString(ilon)+"%"+cc.getString(ilat)+"%"+cc.getString(iid1)+"%"+cc.getString(imain)+"%"+cc.getString(idescription)+"%"+cc.getString(itemp)+"%"+cc.getString(ipressure)+"%"+cc.getString(ihumidity)+"%"+cc.getString(itemp_min)+"%"+cc.getString(itemp_max)+"%";
+
+
+                }while (cc.moveToNext());
+            }
+
+            return alltime;
+
+        }
+        catch (Exception e)
+        {
+            Log.e("ERROR","EXTRACTION",e);
+        }
+
+        return alltime="No Data";
     }
 
 }

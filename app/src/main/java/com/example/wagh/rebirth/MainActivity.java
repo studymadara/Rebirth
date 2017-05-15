@@ -1,6 +1,7 @@
 package com.example.wagh.rebirth;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -89,130 +90,58 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-     void JSONToString(String rock)
-     {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    void DATAbase(String rock)
+    {
+        JsonToString json=new JsonToString();
+
+        weather zz=json.JSONToString(rock);
+
+        if (zz!=null)
+        {
+
+            try
+            {
+                //database things
 
 
-         if(!(rock.equals("No Data Found")))
-         {
-             try
-             {
-                 JSONObject jsonObject=new JSONObject(rock);
-
-                 JSONObject jsoncoord=jsonObject.getJSONObject("coord");
-
-                 JSONArray jsonweather=jsonObject.getJSONArray("weather");      //all test case are performed for JSON
-
-                 JSONObject  jsonmain=jsonObject.getJSONObject("main");
-
-                 JSONObject  jsonwind=jsonObject.getJSONObject("wind");
-
-                 JSONObject  jsonclouds=jsonObject.getJSONObject("clouds");
-
-                 JSONObject  jsonsys=jsonObject.getJSONObject("sys");
+                SQLiteDatabase databasemain =null;
 
 
+                databasemain=openOrCreateDatabase(databasename,MODE_PRIVATE,null);
 
-                 String base=jsonObject.getString("base");
-
-                 String dt=jsonObject.getString("dt");
-
-                 String id=jsonObject.getString("id");
-
-                 String name=jsonObject.getString("name");
-
-                 String cod=jsonObject.getString("cod");
-
-                 String id1="";
-
-                 String main="";
-
-                 String description="";
-
-                 String lon=jsoncoord.getString("lon");
-
-                 String lat=jsoncoord.getString("lat");
-
-
-                 for (int i=0;i<jsonweather.length();i++)
-                 {
-                     JSONObject jsonweatherarray=(JSONObject)jsonweather.get(i);
-
-                     id1=jsonweatherarray.getString("id");
-
-                     main=jsonweatherarray.getString("main");
-
-                     description=jsonweatherarray.getString("description");
-                 }
-
-                 String temp=jsonmain.getString("temp");
-
-                 String pressure=jsonmain.getString("pressure");
-
-                 String humidity=jsonmain.getString("humidity");
-
-                 String temp_min=jsonmain.getString("temp_min");
-
-                 String temp_max=jsonmain.getString("temp_max");
-
-
-                 Log.d("Data Congo",name);
-
-                 finaldata+="|base="+base+"|dt="+dt+"|id="+id+"|name="+name+"|cod="+cod+"|lon="+lon+"|lat="+lat+"|temp="+temp+"|pressure="+pressure+"|humidity="+humidity+"|temp max="+temp_max+"|temp min="+temp_min;
-
-                 finaldata+="|id="+id1+"|main="+main+"|description="+description;
-
-                 Log.d("Data Congo",finaldata);
-
-                 //database things
-
-
-                 SQLiteDatabase databasemain =null;
-
-
-                     databasemain=openOrCreateDatabase(databasename,MODE_PRIVATE,null);
-
-                 //context=getApplicationContext();
+                //context=getApplicationContext();
 
                 //java.lang.NullPointerException: Attempt to invoke virtual method 'android.database.sqlite.SQLiteDatabase android.content.Context.openOrCreateDatabase(java.lang.String, int, android.database.sqlite.SQLiteDatabase$CursorFactory)' on a null object reference
 
 
-                 //still error on this line
+                //still error on this line
 
-                 bb.onCreate(databasemain);
+                bb.onCreate(databasemain);
 
-                 bb.insert(databasemain,base,dt,id,name,cod,lon,lat,temp,pressure,humidity,temp_max,temp_min,id1,main,description);
+                bb.insert(databasemain,zz.getBase(),zz.getDt(),zz.getId(),zz.getName(),zz.getCod(),zz.getLon(),zz.getLat(),zz.getTemp(),zz.getPressure(),zz.getHumidity(),zz.getTemp_max(),zz.getTemp_min(),zz.getId1(),zz.getMain(),zz.getDescription());
+
+                String golden=bb.extract(databasemain);
+
+                Intent intent=new Intent(MainActivity.this,alldataRecyclerview.class);
+
+                intent.putExtra("GOLDENDATA",golden);
+
+                startActivity(intent);
 
 
-                textView.setText(name);
+                //textView.setText(golden);
 
                 // textView.setText(finaldata);
 
-
-
-             }
-             catch (Exception e)
-             {
-                 Log.e("ERROR","JSONTOSTRING",e);
-
-             }
-
-         }
-         else
-         {
-             //textView.setText(finaldata);
-         }
-
-         //textView.setText(finaldata);
-     }
-
-
-
-
-        //Linking of other classes
-
-
-
+            }
+            catch (Exception e)
+            {
+                Log.e("Error","DatabaseMAINACTIVITY",e);
+            }
+        }
     }
+
+
+}
 

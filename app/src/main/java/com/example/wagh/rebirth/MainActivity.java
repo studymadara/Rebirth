@@ -7,7 +7,10 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,10 +25,11 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
 
-    private TextView textView;
+//   private TextView textView;    //used in 1st version
 
     private Button b1;
 
+    RecyclerView recyclerViewMainRecyclerView;  //for the 16th may version
 
     Context context;
 
@@ -36,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     String gold = null;
 
-    String finaldata="";
+//    String finaldata="";  //used in 1st version
 
     Object anyObject = null;
 
@@ -60,7 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
         //*end of database things
 
-        textView=(TextView)findViewById(R.id.texty);
+        //Binding stuff
+
+        recyclerViewMainRecyclerView=(RecyclerView)findViewById(R.id.rvlist);
+
+        //textView=(TextView)findViewById(R.id.texty);   //used in 1st version
 
         b1=(Button)findViewById(R.id.button);
 
@@ -83,6 +91,19 @@ public class MainActivity extends AppCompatActivity {
        // finaldata=sc.data2;
 
         //JSONToString(finaldata);
+
+        //Recyclerview stuff
+
+        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(this);
+
+        recyclerViewMainRecyclerView.setLayoutManager(layoutManager);
+
+        AdapterClassMainActivityRecycler adapterClassMainActivityRecycler=new AdapterClassMainActivityRecycler();
+
+        recyclerViewMainRecyclerView.setAdapter(adapterClassMainActivityRecycler);
+
+      //***********************************************set on click for recycler :)
+
 
     }
 

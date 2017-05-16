@@ -26,4 +26,16 @@
         android:layout_marginTop="15dp"
         android:padding="15dp" />
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:padding="15dp"
+        android:id="@+id/rvlist">
+
+
+
+    </android.support.v7.widget.RecyclerView>
+
+
 </LinearLayout>

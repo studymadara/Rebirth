@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/cardview"
         app:cardElevation="10dp"
-        app:cardCornerRadius="5dp"
         android:layout_margin="20px"
         >
 
@@ -24,7 +23,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:layout_margin="15dp"
                 android:textSize="25dp"
                 android:padding="10dp"
                 android:id="@+id/tvheading"
@@ -38,7 +37,7 @@
                 android:padding="10dp"
                 android:textSize="20dp"
                 android:id="@+id/tvpara"
-
+                android:layout_margin="15dp"
                 android:fontFamily="sans-serif-condensed"
                 />
 

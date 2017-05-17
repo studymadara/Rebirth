@@ -28,13 +28,18 @@ public class ServerCalls extends AsyncTask<Object,Void,String> {
 
     String API2="600aa0c365273fef20eba556eed903a3";
 
-    String idvalue="1272423";
+    int idvalue;
 
     String data1,data2="";
 
     String send;
 
     MainActivity mm;
+
+    ServerCalls(int cityid)
+    {
+        this.idvalue=cityid;
+    }
 
     @Override
     protected String doInBackground(Object[] params) {

@@ -76,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                sc = new ServerCalls();
+                int idvalue=1272423;
+
+                sc = new ServerCalls(idvalue);
 
                 sc.execute(anyObject, gold,MainActivity.this);        ////some issues need to check from hereQ!!!!!!!!!!!
 
@@ -104,8 +106,9 @@ public class MainActivity extends AppCompatActivity {
 
       //***********************************************set on click for recycler :)
 
-
     }
+
+
 
 
 

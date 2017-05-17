@@ -1,10 +1,12 @@
 package com.example.wagh.rebirth;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,10 @@ public class AdapterClassMainActivityRecycler extends RecyclerView.Adapter<Adapt
 {
 
     ArrayList<DataOFCITY> citynames;
+
+    DataOFCITY dd;
+
+    int clickCityID;
 
     AdapterClassMainActivityRecycler()
     {
@@ -53,11 +59,12 @@ public class AdapterClassMainActivityRecycler extends RecyclerView.Adapter<Adapt
         return viewHolder;
     }
 
+
     @Override
     public void onBindViewHolder(AdapterClassMainActivityRecycler.ViewHolder holder, int position)
     {
 
-        DataOFCITY dd=citynames.get(position);
+        dd=citynames.get(position);
 
         holder.tv1City.setText(dd.getCityname());
 
@@ -69,7 +76,7 @@ public class AdapterClassMainActivityRecycler extends RecyclerView.Adapter<Adapt
         return citynames.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         TextView tv1City;
 
@@ -77,7 +84,30 @@ public class AdapterClassMainActivityRecycler extends RecyclerView.Adapter<Adapt
         {
             super(v);
 
+            v.setOnClickListener(this);             //onclicklistener much needed
+
             tv1City =(TextView)v.findViewById(R.id.tvheading);
+
+        }
+
+
+        //this is how onclicked is used
+
+
+        @Override
+        public void onClick(View v) {
+
+            //Toast.makeText(v.getContext(),""+getAdapterPosition(),Toast.LENGTH_LONG).show();
+
+            dd=citynames.get(getAdapterPosition());
+
+            Toast.makeText(v.getContext(),"City "+dd.getCityname(),Toast.LENGTH_LONG).show();
+
+            clickCityID=dd.getCityid();
+
+            ServerCalls serverCalls=new ServerCalls(clickCityID);
+
+            serverCalls.execute();
 
         }
     }
